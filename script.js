@@ -20,15 +20,40 @@ class BingoGame {
             extraTime: { available: true, cooldown: 0 }
         };
         
-        // Achievements
+        // Initialize achievements
         this.achievements = {
-            firstWin: { unlocked: false, name: 'First Victory' },
-            winStreak3: { unlocked: false, name: '3 Win Streak' },
-            winStreak5: { unlocked: false, name: '5 Win Streak' },
-            perfectGame: { unlocked: false, name: 'Perfect Game' },
-            speedRunner: { unlocked: false, name: 'Speed Runner' }
+            firstWin: {
+                name: 'First Victory',
+                description: 'Win your first game',
+                icon: '🌟',
+                unlocked: false
+            },
+            winStreak3: {
+                name: '3 Win Streak',
+                description: 'Win 3 games in a row',
+                icon: '🔥',
+                unlocked: false
+            },
+            winStreak5: {
+                name: '5 Win Streak',
+                description: 'Win 5 games in a row',
+                icon: '⚡',
+                unlocked: false
+            },
+            perfectGame: {
+                name: 'Perfect Game',
+                description: 'Win all rounds in a game',
+                icon: '👑',
+                unlocked: false
+            },
+            speedRunner: {
+                name: 'Speed Runner',
+                description: 'Complete a round with time remaining',
+                icon: '⚡',
+                unlocked: false
+            }
         };
-        
+       
         // Scores
         this.playerScore = 0;
         this.systemScore = 0;
@@ -46,6 +71,9 @@ class BingoGame {
 
         // Ensure popup is hidden on initialization
         this.hidePopup();
+
+        // Initialize achievements display
+        this.initializeAchievements();
     }
 
     initializeElements() {
@@ -194,62 +222,53 @@ class BingoGame {
     }
 
     checkAchievements() {
-        if (!this.achievements.firstWin.unlocked && this.playerScore > 0) {
-            this.unlockAchievement('firstWin');
+        // First Victory
+        if (this.playerScore > 0 && !this.achievements.firstWin.unlocked) {
+            this.achievements.firstWin.unlocked = true;
+            this.showAchievementUnlocked(this.achievements.firstWin.name);
         }
-        if (!this.achievements.winStreak3.unlocked && this.winStreak >= 3) {
-            this.unlockAchievement('winStreak3');
+        
+        // Win Streak Achievements
+        if (this.winStreak >= 3 && !this.achievements.winStreak3.unlocked) {
+            this.achievements.winStreak3.unlocked = true;
+            this.showAchievementUnlocked(this.achievements.winStreak3.name);
         }
-        if (!this.achievements.winStreak5.unlocked && this.winStreak >= 5) {
-            this.unlockAchievement('winStreak5');
+        
+        if (this.winStreak >= 5 && !this.achievements.winStreak5.unlocked) {
+            this.achievements.winStreak5.unlocked = true;
+            this.showAchievementUnlocked(this.achievements.winStreak5.name);
         }
-        if (!this.achievements.perfectGame.unlocked && this.playerScore === this.maxAttempts) {
-            this.unlockAchievement('perfectGame');
+        
+        // Perfect Game
+        if (this.manualAttempts >= this.maxAttempts && this.playerScore === this.maxAttempts && !this.achievements.perfectGame.unlocked) {
+            this.achievements.perfectGame.unlocked = true;
+            this.showAchievementUnlocked(this.achievements.perfectGame.name);
         }
-        if (!this.achievements.speedRunner.unlocked && this.timeLeft > 0) {
-            this.unlockAchievement('speedRunner');
+        
+        // Speed Runner
+        if (this.timeLeft > 20 && !this.achievements.speedRunner.unlocked) {
+            this.achievements.speedRunner.unlocked = true;
+            this.showAchievementUnlocked(this.achievements.speedRunner.name);
         }
+        
+        // Update achievements display
+        this.initializeAchievements();
     }
 
-    unlockAchievement(achievement) {
-        this.achievements[achievement].unlocked = true;
-        this.showAchievementPopup(this.achievements[achievement].name);
+    showAchievementUnlocked(achievementName) {
+        const message = `Achievement Unlocked: ${achievementName}!`;
+        this.updateGameStatus(message, 'success');
+        this.playSound(this.achievementSound);
         
-        // Find and update the achievement element
-        const achievementElements = document.querySelectorAll('.achievement');
-        achievementElements.forEach(el => {
-            const title = el.querySelector('.text-base').textContent;
-            if (title === this.achievements[achievement].name) {
-                el.classList.add('unlocked');
-                // Add a subtle animation
-                el.style.animation = 'achievementUnlock 0.5s ease-out';
-            }
-        });
-    }
-
-    showAchievementPopup(achievementName) {
-        const popup = document.createElement('div');
-        popup.className = 'achievement-popup fixed top-4 right-4 bg-yellow-400 text-white p-4 rounded-lg shadow-lg transform transition-all';
-        popup.innerHTML = `
-            <div class="flex items-center">
-                <span class="text-2xl mr-2">🏆</span>
-                <div>
-                    <div class="font-bold">Achievement Unlocked!</div>
-                    <div>${achievementName}</div>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(popup);
+        // Show achievement popup
+        this.popupTitle.textContent = 'Achievement Unlocked!';
+        this.popupMessage.textContent = message;
+        this.popupTitle.className = 'text-4xl font-bold mb-4 achievement-unlocked';
+        this.resultPopup.classList.remove('hidden');
+        this.resultPopup.classList.add('flex');
         
-        // Add entrance animation
-        popup.style.animation = 'slideIn 0.5s ease-out';
-        
-        setTimeout(() => {
-            popup.style.animation = 'slideOut 0.5s ease-in';
-            setTimeout(() => {
-                popup.remove();
-            }, 500);
-        }, 2500);
+        // Auto-hide popup after 3 seconds
+        setTimeout(() => this.hidePopup(), 3000);
     }
 
     addEventListeners() {
@@ -289,11 +308,17 @@ class BingoGame {
         this.winStreak = 0;
         this.bestStreak = 0;
         
+        // Reset achievements
+        // Object.keys(this.achievements).forEach(key => {
+        //     this.achievements[key].unlocked = false;
+        // });
+        
         // Reset displays
         this.numbersLeftDisplay.textContent = '-';
         this.markedNumbersDisplay.textContent = '0';
         this.updateAttemptsDisplay(this.maxAttempts);
         this.updateScores();
+        this.initializeAchievements(); // Reinitialize achievements display
         
         // Generate initial system number
         this.generateSystemNumber();
@@ -434,7 +459,7 @@ class BingoGame {
             this.showBingo(divisors);
         }
         
-        this.playSound(this.bingoSound);
+        // this.playSound(this.bingoSound);
 
         // Check if all attempts are completed
         this.checkGameCompletion();
@@ -497,7 +522,7 @@ class BingoGame {
         // Update popup content
         this.popupTitle.textContent = isWin ? 'BINGO!' : 'Better Luck Next Time!';
         this.popupMessage.textContent = message;
-        this.popupTitle.className = `font-bold mb-4 ${isWin ? 'win text-6xl' : 'lose text-4xl'}`;
+        this.popupTitle.className = `font-bold mb-4 ${isWin ? 'win text-6xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-transparent bg-clip-text' : 'lose text-4xl'}`;
         
         if (isWin) {
             this.popupTitle.style.fontFamily = "'Uncial Antiqua', cursive";
@@ -631,12 +656,14 @@ class BingoGame {
 
     toggleAutoPlay() {
         if (this.autoPlayInterval) {
+            this.startNewGame()
             clearInterval(this.autoPlayInterval);
             this.autoPlayInterval = null;
             this.autoPlayBtn.textContent = 'Auto Play';
             this.callNumberBtn.disabled = false;
             this.autoPlayAttempts = 0;
             this.updateGameStatus('', '');
+            
             this.updateAttemptsDisplay(this.maxAttempts);
         } else {
             this.autoPlayBtn.textContent = 'Stop Auto Play';
@@ -692,15 +719,35 @@ class BingoGame {
     showPopup(isWin, message) {
         this.popupTitle.textContent = isWin ? 'BINGO!' : 'Better Luck Next Time!';
         this.popupMessage.textContent = message;
-        this.popupTitle.className = `text-4xl font-bold mb-4 ${isWin ? 'win' : 'lose'}`;
-        this.resultPopup.classList.remove('hidden');
-        this.resultPopup.classList.add('flex');
+        this.popupTitle.className = `text-6xl font-bold mb-4 ${isWin ? 'win ' : 'lose text-red-600'}`;
+        setTimeout(() => {
+            this.resultPopup.classList.remove('hidden');
+            this.resultPopup.classList.add('flex');
+        }, 1000);
     }
 
     hidePopup() {
         this.resultPopup.style.display = 'none';
         this.resultPopup.classList.add('hidden');
         this.resultPopup.classList.remove('flex');
+    }
+
+    initializeAchievements() {
+        if (!this.achievementsContainer) return;
+        
+        this.achievementsContainer.innerHTML = '';
+        Object.entries(this.achievements).forEach(([key, achievement]) => {
+            const div = document.createElement('div');
+            div.className = `achievement${achievement.unlocked ? ' unlocked' : ''} ${achievement.unlocked ? 'border-2 border-yellow-500 bg-gradient-to-r from-indigo-50 to-purple-50' : ''}  p-3 rounded-lg text-center border border-indigo-100`;
+            div.innerHTML = `
+                <div class="achievement-icon ${achievement.unlocked ? 'text-yellow-500' : 'text-gray-500'}">${achievement.unlocked ? '🥇' : achievement.icon || '🏆'}</div>
+                <div class="achievement-content ${achievement.unlocked ? 'text-green-600' : 'text-gray-500'}">
+                    <div class="achievement-title text-l font-bold text-green-600">${achievement.name}</div>
+                    <div class="achievement-description text-sm">${achievement.description}</div>
+                </div>
+            `;
+            this.achievementsContainer.appendChild(div);
+        });
     }
 }
 

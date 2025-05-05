@@ -406,7 +406,7 @@ input[type="number"] {
 }
 
 #popupTitle.win {
-    @apply text-emerald-600;
+    /* @apply text-emerald-600; */
 }
 
 #popupTitle.lose {
@@ -532,44 +532,31 @@ input[type="number"] {
 }
 
 #achievementsContainer .achievement.unlocked {
-    @apply border-emerald-500;
-    @apply bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100;
+    @apply border-yellow-500;
+    @apply bg-gradient-to-br from-yellow-50 via-amber-50 to-yellow-100;
     @apply shadow-lg;
+    @apply animate-pulse;
+}
+
+#achievementsContainer .achievement.unlocked:hover {
+    @apply shadow-xl;
     @apply transform -translate-y-1;
 }
 
-#achievementsContainer .achievement.unlocked::before {
-    content: '✓';
-    @apply absolute -top-2 -right-2;
-    @apply bg-gradient-to-r from-emerald-500 to-green-500;
-    @apply text-white;
-    @apply w-6 h-6 rounded-full;
-    @apply flex items-center justify-center;
-    @apply font-bold;
-    @apply shadow-md;
-    animation: checkmark 0.5s ease-out;
-}
-
-#achievementsContainer .achievement.unlocked::after {
-    content: '';
-    @apply absolute inset-0;
-    @apply bg-gradient-to-r from-transparent via-white/30 to-transparent;
-    @apply opacity-0;
-    animation: shine 2s infinite;
-}
-
-#achievementsContainer .achievement.unlocked:hover::after {
-    @apply opacity-100;
-}
-
 #achievementsContainer .achievement.unlocked .text-base {
-    @apply text-emerald-700 font-bold;
-    @apply bg-gradient-to-r from-emerald-700 to-green-700;
+    @apply text-yellow-700 font-bold;
+    @apply bg-gradient-to-r from-yellow-700 to-amber-700;
     @apply bg-clip-text text-transparent;
 }
 
 #achievementsContainer .achievement.unlocked .text-xs {
-    @apply text-emerald-600;
+    @apply text-yellow-600;
+}
+
+#achievementsContainer .achievement.unlocked .achievement-icon {
+    @apply transform scale-110;
+    @apply animate-bounce;
+    @apply text-yellow-500;
 }
 
 /* Layout styles */
@@ -616,438 +603,199 @@ input[type="number"] {
 }
 
 /* Achievement styles */
-.achievement {
-    @apply transition-all duration-300;
-    @apply border-2 border-transparent;
-    @apply relative overflow-hidden;
-    @apply flex flex-col;
-    @apply hover:shadow-md;
-}
-
-.achievement.unlocked {
-    @apply border-green-500;
-    @apply bg-gradient-to-br from-green-50 to-green-100;
-    @apply shadow-md;
-    @apply transform -translate-y-1;
-}
-
-.achievement.unlocked::before {
-    content: '✓';
-    @apply absolute -top-2 -right-2;
-    @apply bg-green-500 text-white;
-    @apply w-6 h-6 rounded-full;
-    @apply flex items-center justify-center;
-    @apply font-bold;
-    @apply shadow-md;
-    @apply animate-checkmark;
-}
-
-.achievement.unlocked::after {
-    content: '';
-    @apply absolute inset-0;
-    @apply bg-gradient-to-r from-transparent via-white to-transparent;
-    @apply opacity-20;
-    @apply animate-shine;
-}
-
-.achievement.unlocked .text-base {
-    @apply text-green-800 font-bold;
-}
-
-.achievement.unlocked .text-xs {
-    @apply text-green-700;
-}
-
-@keyframes checkmark {
-    0% { transform: scale(0); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-@keyframes shine {
-    0% { transform: translateX(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) rotate(45deg); }
-}
-
-/* Responsive styles */
-@media (max-width: 1024px) {
-    .container {
-        @apply px-4;
-    }
-    
-    .lg\:w-1\/3,
-    .lg\:w-2\/3 {
-        @apply w-full;
-    }
-    
-    .space-y-6 {
-        @apply space-y-4;
-    }
-}
-
-@media (max-width: 768px) {
-    #numberHistory th,
-    #numberHistory td {
-        @apply px-2 py-1 text-xs;
-    }
-    
-    .achievement {
-        @apply p-3;
-    }
-    
-    .achievement .text-base {
-        @apply text-base;
-    }
-    
-    .achievement .text-xs {
-        @apply text-xs;
-    }
-}
-
-/* Base styles */
-body {
-    @apply bg-gradient-to-br from-slate-50 to-slate-100;
-    height: 100vh;
-    overflow: hidden;
-}
-
-/* Header styles */
-header h1 {
-    @apply text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Card styles */
-.bg-white {
-    @apply bg-white/90 backdrop-blur-sm;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-}
-
-/* Score Board styles */
-.grid-cols-5 > div {
-    @apply bg-gradient-to-br from-white to-slate-50;
-    @apply border border-slate-200;
-    @apply transition-all duration-300;
-}
-
-.grid-cols-5 > div:hover {
-    @apply transform -translate-y-1;
-    @apply shadow-lg;
-}
-
-#playerScore {
-    @apply text-emerald-600;
-}
-
-#systemScore {
-    @apply text-rose-600;
-}
-
-#winStreak {
-    @apply text-indigo-600;
-}
-
-#bestStreak {
-    @apply text-violet-600;
-}
-
-#attemptsNumber {
-    @apply text-amber-600;
-}
-
-/* Game Stats styles */
-.grid-cols-3 > div {
-    @apply bg-gradient-to-br from-white to-slate-50;
-    @apply border border-slate-200;
-    @apply transition-all duration-300;
-}
-
-.grid-cols-3 > div:hover {
-    @apply transform -translate-y-1;
-    @apply shadow-lg;
-}
-
-/* Button styles */
-button:not(:disabled) {
-    @apply bg-gradient-to-r from-indigo-600 to-purple-600;
-    @apply text-white;
-    @apply hover:from-indigo-700 hover:to-purple-700;
-    @apply transform transition-all duration-200;
-    @apply shadow-md hover:shadow-lg;
-}
-
-button:disabled {
-    @apply bg-slate-300;
-    @apply text-slate-500;
-    @apply cursor-not-allowed;
-}
-
-/* Input styles */
-input[type="number"] {
-    @apply bg-white;
-    @apply border border-slate-200;
-    @apply focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200;
-    @apply transition-all duration-200;
-}
-
-/* Achievement styles */
-.achievement {
-    @apply bg-gradient-to-br from-white to-slate-50;
-    @apply border-2 border-slate-200;
-    @apply transition-all duration-300;
-    @apply hover:shadow-lg;
-}
-
-.achievement.unlocked {
-    @apply border-emerald-500;
-    @apply bg-gradient-to-br from-emerald-50 to-green-50;
-    @apply shadow-lg;
-}
-
-.achievement.unlocked::before {
-    @apply text-emerald-500;
-}
-
-.achievement.unlocked .text-base {
-    @apply text-emerald-700;
-}
-
-.achievement.unlocked .text-xs {
-    @apply text-emerald-600;
-}
-
-/* Game History styles */
-#numberHistory th {
-    @apply bg-slate-50;
-    @apply text-slate-600;
-}
-
-.history-row-win {
-    @apply bg-emerald-50;
-}
-
-.history-row-lose {
-    @apply bg-rose-50;
-}
-
-.history-row-win td {
-    @apply text-emerald-700;
-}
-
-.history-row-lose td {
-    @apply text-rose-700;
-}
-
-/* Timer styles */
-#timerDisplay {
-    @apply text-slate-700;
-    font-family: 'Courier New', monospace;
-}
-
-#timerDisplay.warning {
-    @apply text-rose-600;
-    animation: pulse 1s infinite;
-}
-
-/* Power-up styles */
-.power-up-btn {
-    @apply bg-gradient-to-r from-indigo-500 to-purple-500;
-    @apply text-white;
-    @apply hover:from-indigo-600 hover:to-purple-600;
-    @apply transition-all duration-300;
-}
-
-.power-up-btn:disabled {
-    @apply bg-slate-300;
-    @apply text-slate-500;
-}
-
-/* Result Popup styles */
-#resultPopup {
-    @apply bg-slate-900/50 backdrop-blur-sm;
-}
-
-#resultPopup .bg-white {
-    @apply bg-white/95 backdrop-blur-sm;
-    @apply border border-slate-200;
-    @apply shadow-2xl;
-}
-
-#popupTitle.win {
-    @apply text-emerald-600;
-}
-
-#popupTitle.lose {
-    @apply text-rose-600;
-}
-
-/* Game Status styles */
-#gameStatus {
-    @apply bg-gradient-to-r from-slate-50 to-white;
-    @apply border border-slate-200;
-    @apply shadow-sm;
-}
-
-#gameStatus.success {
-    @apply bg-gradient-to-r from-emerald-50 to-green-50;
-    @apply text-emerald-700;
-}
-
-#gameStatus.error {
-    @apply bg-gradient-to-r from-rose-50 to-red-50;
-    @apply text-rose-700;
-}
-
-#gameStatus.info {
-    @apply bg-gradient-to-r from-indigo-50 to-blue-50;
-    @apply text-indigo-700;
-}
-
-/* Called Number Display */
-#calledNumber {
-    @apply text-4xl font-bold;
-    @apply bg-gradient-to-r from-indigo-600 to-purple-600;
-    @apply bg-clip-text text-transparent;
-    @apply animate-pulse;
-}
-
-/* Scrollbar styles */
-.overflow-y-auto {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-
-.overflow-y-auto::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-
-/* Game History and Achievements container styles */
-#achievementsContainer,
-#numberHistory {
-    @apply overflow-y-auto;
+#achievementsContainer {
+    @apply flex flex-row gap-4 overflow-x-auto p-4;
     @apply scrollbar-none;
     @apply hover:scrollbar-thin;
     @apply transition-all duration-300;
+    @apply pb-6;
+    @apply min-h-[200px];
 }
 
-/* Add smooth scrolling */
-#achievementsContainer,
-#numberHistory {
-    scroll-behavior: smooth;
+.achievement {
+    @apply bg-gradient-to-r from-indigo-50 to-purple-50;
+    @apply p-3;
+    @apply rounded-lg;
+    @apply text-center;
+    @apply border-2 border-indigo-100;
+    @apply transition-all duration-300;
+    @apply hover:shadow-lg;
+    @apply relative;
+    @apply flex flex-col;
+    @apply min-w-[280px];
+    @apply w-[280px];
+    @apply h-[160px];
+    @apply overflow-hidden;
+    @apply flex-shrink-0;
 }
 
-/* Add a subtle gradient fade at the bottom to indicate scrollable content */
-#achievementsContainer::after,
-#numberHistory::after {
-    content: '';
-    @apply absolute bottom-0 left-0 right-0;
-    @apply h-8 pointer-events-none;
-    @apply bg-gradient-to-t from-white to-transparent;
-    @apply opacity-0 transition-opacity duration-300;
+.achievement-icon {
+    @apply text-4xl;
+    @apply transition-all duration-300;
+    @apply mb-3;
+    @apply text-center;
+    @apply transform hover:scale-110;
 }
 
-#achievementsContainer:hover::after,
-#numberHistory:hover::after {
-    @apply opacity-100;
+.achievement-content {
+    @apply flex-1;
+    @apply flex flex-col;
+    @apply justify-center;
+    @apply text-center;
+    @apply space-y-2;
 }
 
-/* Animations */
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
+.achievement-title {
+    @apply text-l font-bold text-green-600;
+    @apply mb-1;
 }
 
-@keyframes popupAppear {
-    from {
-        transform: scale(0.95);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
+.achievement-description {
+    @apply text-sm;
+    @apply text-slate-500;
+    @apply line-clamp-2;
 }
 
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+/* Unlocked achievement styles */
+.achievement.unlocked {
+    @apply border-yellow-500;
+    @apply bg-gradient-to-br from-yellow-50 via-amber-50 to-yellow-100;
+    @apply shadow-lg;
+    @apply animate-pulse;
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
+.achievement.unlocked:hover {
+    @apply shadow-xl;
+    @apply transform -translate-y-1;
 }
 
-/* Responsive styles */
+.achievement.unlocked .achievement-title {
+    @apply text-yellow-700 font-bold;
+    @apply bg-gradient-to-r from-yellow-700 to-amber-700;
+    @apply bg-clip-text text-transparent;
+}
+
+.achievement.unlocked .achievement-description {
+    @apply text-yellow-600;
+}
+
+.achievement.unlocked .achievement-icon {
+    @apply transform scale-110;
+    @apply animate-bounce;
+    @apply text-yellow-500;
+}
+
+/* Scrollbar styles for achievements container */
+#achievementsContainer::-webkit-scrollbar {
+    @apply h-2;
+}
+
+#achievementsContainer::-webkit-scrollbar-track {
+    @apply bg-slate-100 rounded-full;
+}
+
+#achievementsContainer::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full;
+    @apply hover:bg-slate-400;
+}
+
+/* Responsive achievement styles */
 @media (max-width: 1024px) {
-    .container {
-        @apply px-2;
+    #achievementsContainer {
+        @apply gap-3;
     }
     
-    .lg\:w-1\/3,
-    .lg\:w-2\/3 {
-        @apply w-full;
+    .achievement {
+        @apply min-w-[240px];
+        @apply w-[240px];
+        @apply h-[140px];
     }
 }
 
 @media (max-width: 768px) {
-    #numberHistory th,
-    #numberHistory td {
-        @apply px-1 py-0.5 text-xs;
-    }
-    
     .achievement {
-        @apply p-2;
+        @apply min-w-[220px];
+        @apply w-[220px];
+        @apply h-[130px];
+        @apply p-3;
     }
     
-    .achievement .text-base {
-        @apply text-sm;
+    .achievement-title {
+        @apply text-base;
     }
     
-    .achievement .text-xs {
-        @apply text-2xs;
+    .achievement-description {
+        @apply text-xs;
+    }
+    
+    .achievement-icon {
+        @apply text-3xl;
+        @apply mb-2;
     }
 }
 
-#achievementsContainer .achievement.unlocked {
-    @apply border-emerald-500;
-    @apply bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100;
-    @apply shadow-lg;
+@media (max-width: 640px) {
+    .achievement {
+        @apply min-w-[200px];
+        @apply w-[200px];
+        @apply h-[120px];
+    }
+}
+
+/* Achievement container hover effect */
+#achievementsContainer:hover {
+    @apply shadow-inner;
+}
+
+/* Achievement card hover animations */
+.achievement:hover {
     @apply transform -translate-y-1;
+    @apply shadow-lg;
 }
 
-#achievementsContainer .achievement.unlocked::before {
-    content: '✓';
-    @apply absolute -top-2 -right-2;
-    @apply bg-gradient-to-r from-emerald-500 to-green-500;
-    @apply text-white;
-    @apply w-6 h-6 rounded-full;
-    @apply flex items-center justify-center;
-    @apply font-bold;
-    @apply shadow-md;
-    animation: checkmark 0.5s ease-out;
+.achievement:hover .achievement-icon {
+    @apply transform scale-110;
 }
 
-#achievementsContainer .achievement.unlocked::after {
-    content: '';
-    @apply absolute inset-0;
-    @apply bg-gradient-to-r from-transparent via-white/30 to-transparent;
-    @apply opacity-0;
-    animation: shine 2s infinite;
+/* Achievement card active state */
+.achievement:active {
+    @apply transform scale-95;
 }
 
-#achievementsContainer .achievement.unlocked:hover::after {
-    @apply opacity-100;
+/* Achievement card focus state */
+.achievement:focus {
+    @apply outline-none;
+    @apply ring-2 ring-indigo-500 ring-opacity-50;
 }
 
-#achievementsContainer .achievement.unlocked .text-base {
-    @apply text-emerald-700 font-bold;
-    @apply bg-gradient-to-r from-emerald-700 to-green-700;
-    @apply bg-clip-text text-transparent;
+/* Achievement card disabled state */
+.achievement.disabled {
+    @apply opacity-50;
+    @apply cursor-not-allowed;
+    @apply pointer-events-none;
 }
 
-#achievementsContainer .achievement.unlocked .text-xs {
-    @apply text-emerald-600;
-} 
+
+
+.achievement {
+   
+    @apply bg-gradient-to-r from-indigo-50 to-purple-50 p-3 rounded-lg text-center border border-indigo-100
+}
+
+
+
+.achievement-title {
+   
+    @apply text-l font-bold text-green-600;
+}
+
+.achievement-description {
+  
+    @apply text-sm;
+}
+
+.achievement-icon {
+    @apply text-4xl;
+}
+
+
