@@ -1,0 +1,1053 @@
+.bingo-number {
+    @apply bg-white border-2 border-gray-200 rounded-lg p-4 text-center text-xl font-bold text-gray-800 cursor-pointer transition-all duration-200;
+}
+
+.bingo-number:hover {
+    @apply border-gray-400 transform scale-105;
+}
+
+.bingo-number.marked {
+    @apply bg-red-100 border-red-500 text-red-700;
+}
+
+.number-history-item {
+    @apply bg-gray-100 border border-gray-300 rounded-full px-3 py-1 text-sm font-medium text-gray-700;
+}
+
+.number-history-item.system {
+    @apply bg-blue-100 border-blue-300 text-blue-700;
+}
+
+.number-history-item.player {
+    @apply bg-green-100 border-green-300 text-green-700;
+}
+
+button:disabled {
+    @apply opacity-50 cursor-not-allowed;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.called-number {
+    animation: pulse 1s infinite;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.bingo-number {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes scoreUpdate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.score-update {
+    animation: scoreUpdate 0.3s ease-out;
+}
+
+.sound-icon {
+    @apply text-xl;
+}
+
+/* Win/Lose animations */
+@keyframes winPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.win-animation {
+    animation: winPulse 0.5s ease-out;
+}
+
+@keyframes loseShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.lose-animation {
+    animation: loseShake 0.5s ease-out;
+}
+
+/* Chrome tone win celebration */
+.win-celebration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(255,215,0,0.9),
+        rgba(255,165,0,0.9),
+        rgba(255,69,0,0.9),
+        rgba(255,215,0,0.9)
+    );
+    background-size: 400% 400%;
+    animation: gradientBG 3s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.celebration-content {
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    animation: celebrationPulse 1s ease-in-out infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes celebrationPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Score Board Tile Animations */
+.grid-cols-5 > div {
+    transition: all 0.3s ease;
+}
+
+.grid-cols-5 > div:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Attempts Tile Special Styles */
+.grid-cols-5 > div:last-child {
+    position: relative;
+    overflow: hidden;
+}
+
+.grid-cols-5 > div:last-child::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(255, 165, 0, 0.1),
+        rgba(255, 69, 0, 0.1)
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.grid-cols-5 > div:last-child:hover::before {
+    opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .grid-cols-5 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-cols-5 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .grid-cols-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .grid-cols-5 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Attempts Display */
+.attempts-display {
+    @apply bg-gray-50 p-4 rounded-lg text-center;
+    @apply border-2 border-gray-200;
+    @apply transition-all duration-300;
+}
+
+.attempts-display.active {
+    @apply border-blue-500 bg-blue-50;
+    animation: pulse 1s infinite;
+}
+
+.attempts-number {
+    @apply text-2xl font-bold text-gray-900;
+    @apply transition-all duration-300;
+}
+
+.attempts-label {
+    @apply text-sm text-gray-600;
+    @apply transition-all duration-300;
+}
+
+.attempts-display.warning {
+    @apply border-yellow-500 bg-yellow-50;
+}
+
+.attempts-display.warning .attempts-number {
+    @apply text-yellow-700;
+}
+
+.attempts-display.warning .attempts-label {
+    @apply text-yellow-600;
+}
+
+.attempts-display.danger {
+    @apply border-red-500 bg-red-50;
+}
+
+.attempts-display.danger .attempts-number {
+    @apply text-red-700;
+}
+
+.attempts-display.danger .attempts-label {
+    @apply text-red-600;
+}
+
+/* Game History Table Styles */
+#numberHistory tr {
+    @apply transition-all duration-200;
+}
+
+#numberHistory tr:hover {
+    @apply bg-gray-50;
+}
+
+#numberHistory td {
+    @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900;
+}
+
+#numberHistory td:first-child {
+    @apply font-medium;
+}
+
+.history-row-win {
+    @apply bg-green-50;
+}
+
+.history-row-lose {
+    @apply bg-red-50;
+}
+
+.history-row-win td {
+    @apply text-green-700;
+}
+
+.history-row-lose td {
+    @apply text-red-700;
+}
+
+/* Enhanced UI Styles */
+.container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.bg-white {
+    @apply shadow-lg rounded-xl;
+}
+
+/* Score Board Enhancement */
+.grid-cols-5 > div {
+    @apply transform transition-all duration-300 hover:scale-105;
+    @apply border border-gray-200;
+}
+
+/* Game Controls Enhancement */
+button:not(:disabled) {
+    @apply transform transition-all duration-200 hover:scale-105;
+    @apply shadow-md hover:shadow-lg;
+}
+
+/* Input Enhancement */
+input[type="number"] {
+    @apply shadow-sm focus:ring-2 focus:ring-gray-400 focus:border-gray-400;
+    @apply transition-all duration-200;
+}
+
+/* Called Number Display Enhancement */
+#calledNumber {
+    @apply text-5xl font-bold;
+    @apply bg-gradient-to-r from-gray-900 to-gray-700;
+    @apply text-transparent bg-clip-text;
+    @apply animate-pulse;
+}
+
+/* Game Status Enhancement */
+#gameStatus {
+    @apply transform transition-all duration-300;
+    @apply shadow-md;
+}
+
+#gameStatus.success {
+    @apply bg-gradient-to-r from-green-100 to-green-50;
+}
+
+#gameStatus.error {
+    @apply bg-gradient-to-r from-red-100 to-red-50;
+}
+
+#gameStatus.info {
+    @apply bg-gradient-to-r from-blue-100 to-blue-50;
+}
+
+/* Sound Toggle Enhancement */
+#toggleSound {
+    @apply transform transition-all duration-200 hover:scale-110;
+    @apply px-4 py-2 rounded-full;
+    @apply bg-gray-100 hover:bg-gray-200;
+}
+
+/* Responsive Table */
+@media (max-width: 640px) {
+    .overflow-x-auto {
+        @apply -mx-4;
+    }
+    
+    #numberHistory td {
+        @apply px-3 py-2 text-xs;
+    }
+    
+    #numberHistory th {
+        @apply px-3 py-2 text-xs;
+    }
+}
+
+/* Animation Enhancements */
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+#numberHistory tr {
+    animation: slideInRight 0.3s ease-out;
+}
+
+/* Score Update Animation Enhancement */
+@keyframes scoreUpdate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); filter: brightness(1.2); }
+    100% { transform: scale(1); }
+}
+
+.score-update {
+    animation: scoreUpdate 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Attempts Display Enhancement */
+.attempts-display {
+    @apply relative overflow-hidden;
+}
+
+.attempts-display::after {
+    content: '';
+    @apply absolute inset-0;
+    @apply bg-gradient-to-r from-transparent via-white to-transparent;
+    @apply opacity-0 transition-opacity duration-300;
+}
+
+.attempts-display:hover::after {
+    @apply opacity-20;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Result Popup styles */
+#resultPopup {
+    @apply bg-slate-900/50 backdrop-blur-sm;
+}
+
+#resultPopup .bg-white {
+    @apply bg-white/95 backdrop-blur-sm;
+    @apply border border-slate-200;
+    @apply shadow-2xl;
+}
+
+#popupTitle.win {
+    @apply text-emerald-600;
+}
+
+#popupTitle.lose {
+    @apply text-rose-600;
+}
+
+/* Game Status styles */
+#gameStatus {
+    @apply bg-gradient-to-r from-slate-50 to-white;
+    @apply border border-slate-200;
+    @apply shadow-sm;
+}
+
+#gameStatus.success {
+    @apply bg-gradient-to-r from-emerald-50 to-green-50;
+    @apply text-emerald-700;
+}
+
+#gameStatus.error {
+    @apply bg-gradient-to-r from-rose-50 to-red-50;
+    @apply text-rose-700;
+}
+
+#gameStatus.info {
+    @apply bg-gradient-to-r from-indigo-50 to-blue-50;
+    @apply text-indigo-700;
+}
+
+/* Called Number Display */
+#calledNumber {
+    @apply text-4xl font-bold;
+    @apply bg-gradient-to-r from-indigo-600 to-purple-600;
+    @apply bg-clip-text text-transparent;
+    @apply animate-pulse;
+}
+
+/* Scrollbar styles */
+.overflow-y-auto {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* Game History and Achievements container styles */
+#achievementsContainer,
+#numberHistory {
+    @apply overflow-y-auto;
+    @apply scrollbar-none;
+    @apply hover:scrollbar-thin;
+    @apply transition-all duration-300;
+}
+
+/* Add smooth scrolling */
+#achievementsContainer,
+#numberHistory {
+    scroll-behavior: smooth;
+}
+
+/* Add a subtle gradient fade at the bottom to indicate scrollable content */
+#achievementsContainer::after,
+#numberHistory::after {
+    content: '';
+    @apply absolute bottom-0 left-0 right-0;
+    @apply h-8 pointer-events-none;
+    @apply bg-gradient-to-t from-white to-transparent;
+    @apply opacity-0 transition-opacity duration-300;
+}
+
+#achievementsContainer:hover::after,
+#numberHistory:hover::after {
+    @apply opacity-100;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@keyframes popupAppear {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 1024px) {
+    .container {
+        @apply px-2;
+    }
+    
+    .lg\:w-1\/3,
+    .lg\:w-2\/3 {
+        @apply w-full;
+    }
+}
+
+@media (max-width: 768px) {
+    #numberHistory th,
+    #numberHistory td {
+        @apply px-1 py-0.5 text-xs;
+    }
+    
+    .achievement {
+        @apply p-2;
+    }
+    
+    .achievement .text-base {
+        @apply text-sm;
+    }
+    
+    .achievement .text-xs {
+        @apply text-2xs;
+    }
+}
+
+#achievementsContainer .achievement.unlocked {
+    @apply border-emerald-500;
+    @apply bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100;
+    @apply shadow-lg;
+    @apply transform -translate-y-1;
+}
+
+#achievementsContainer .achievement.unlocked::before {
+    content: '✓';
+    @apply absolute -top-2 -right-2;
+    @apply bg-gradient-to-r from-emerald-500 to-green-500;
+    @apply text-white;
+    @apply w-6 h-6 rounded-full;
+    @apply flex items-center justify-center;
+    @apply font-bold;
+    @apply shadow-md;
+    animation: checkmark 0.5s ease-out;
+}
+
+#achievementsContainer .achievement.unlocked::after {
+    content: '';
+    @apply absolute inset-0;
+    @apply bg-gradient-to-r from-transparent via-white/30 to-transparent;
+    @apply opacity-0;
+    animation: shine 2s infinite;
+}
+
+#achievementsContainer .achievement.unlocked:hover::after {
+    @apply opacity-100;
+}
+
+#achievementsContainer .achievement.unlocked .text-base {
+    @apply text-emerald-700 font-bold;
+    @apply bg-gradient-to-r from-emerald-700 to-green-700;
+    @apply bg-clip-text text-transparent;
+}
+
+#achievementsContainer .achievement.unlocked .text-xs {
+    @apply text-emerald-600;
+}
+
+/* Layout styles */
+.container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Left sidebar styles */
+.lg\:w-1\/3 {
+    @apply w-full lg:w-1/3;
+}
+
+.lg\:w-2\/3 {
+    @apply w-full lg:w-2/3;
+}
+
+/* Game history table styles */
+#numberHistory {
+    @apply text-sm;
+}
+
+#numberHistory th {
+    @apply px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+#numberHistory td {
+    @apply px-4 py-2 whitespace-nowrap;
+}
+
+.history-row-win {
+    @apply bg-green-50;
+}
+
+.history-row-lose {
+    @apply bg-red-50;
+}
+
+.history-row-win td {
+    @apply text-green-700;
+}
+
+.history-row-lose td {
+    @apply text-red-700;
+}
+
+/* Achievement styles */
+.achievement {
+    @apply transition-all duration-300;
+    @apply border-2 border-transparent;
+    @apply relative overflow-hidden;
+    @apply flex flex-col;
+    @apply hover:shadow-md;
+}
+
+.achievement.unlocked {
+    @apply border-green-500;
+    @apply bg-gradient-to-br from-green-50 to-green-100;
+    @apply shadow-md;
+    @apply transform -translate-y-1;
+}
+
+.achievement.unlocked::before {
+    content: '✓';
+    @apply absolute -top-2 -right-2;
+    @apply bg-green-500 text-white;
+    @apply w-6 h-6 rounded-full;
+    @apply flex items-center justify-center;
+    @apply font-bold;
+    @apply shadow-md;
+    @apply animate-checkmark;
+}
+
+.achievement.unlocked::after {
+    content: '';
+    @apply absolute inset-0;
+    @apply bg-gradient-to-r from-transparent via-white to-transparent;
+    @apply opacity-20;
+    @apply animate-shine;
+}
+
+.achievement.unlocked .text-base {
+    @apply text-green-800 font-bold;
+}
+
+.achievement.unlocked .text-xs {
+    @apply text-green-700;
+}
+
+@keyframes checkmark {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+    .container {
+        @apply px-4;
+    }
+    
+    .lg\:w-1\/3,
+    .lg\:w-2\/3 {
+        @apply w-full;
+    }
+    
+    .space-y-6 {
+        @apply space-y-4;
+    }
+}
+
+@media (max-width: 768px) {
+    #numberHistory th,
+    #numberHistory td {
+        @apply px-2 py-1 text-xs;
+    }
+    
+    .achievement {
+        @apply p-3;
+    }
+    
+    .achievement .text-base {
+        @apply text-base;
+    }
+    
+    .achievement .text-xs {
+        @apply text-xs;
+    }
+}
+
+/* Base styles */
+body {
+    @apply bg-gradient-to-br from-slate-50 to-slate-100;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Header styles */
+header h1 {
+    @apply text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Card styles */
+.bg-white {
+    @apply bg-white/90 backdrop-blur-sm;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+/* Score Board styles */
+.grid-cols-5 > div {
+    @apply bg-gradient-to-br from-white to-slate-50;
+    @apply border border-slate-200;
+    @apply transition-all duration-300;
+}
+
+.grid-cols-5 > div:hover {
+    @apply transform -translate-y-1;
+    @apply shadow-lg;
+}
+
+#playerScore {
+    @apply text-emerald-600;
+}
+
+#systemScore {
+    @apply text-rose-600;
+}
+
+#winStreak {
+    @apply text-indigo-600;
+}
+
+#bestStreak {
+    @apply text-violet-600;
+}
+
+#attemptsNumber {
+    @apply text-amber-600;
+}
+
+/* Game Stats styles */
+.grid-cols-3 > div {
+    @apply bg-gradient-to-br from-white to-slate-50;
+    @apply border border-slate-200;
+    @apply transition-all duration-300;
+}
+
+.grid-cols-3 > div:hover {
+    @apply transform -translate-y-1;
+    @apply shadow-lg;
+}
+
+/* Button styles */
+button:not(:disabled) {
+    @apply bg-gradient-to-r from-indigo-600 to-purple-600;
+    @apply text-white;
+    @apply hover:from-indigo-700 hover:to-purple-700;
+    @apply transform transition-all duration-200;
+    @apply shadow-md hover:shadow-lg;
+}
+
+button:disabled {
+    @apply bg-slate-300;
+    @apply text-slate-500;
+    @apply cursor-not-allowed;
+}
+
+/* Input styles */
+input[type="number"] {
+    @apply bg-white;
+    @apply border border-slate-200;
+    @apply focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200;
+    @apply transition-all duration-200;
+}
+
+/* Achievement styles */
+.achievement {
+    @apply bg-gradient-to-br from-white to-slate-50;
+    @apply border-2 border-slate-200;
+    @apply transition-all duration-300;
+    @apply hover:shadow-lg;
+}
+
+.achievement.unlocked {
+    @apply border-emerald-500;
+    @apply bg-gradient-to-br from-emerald-50 to-green-50;
+    @apply shadow-lg;
+}
+
+.achievement.unlocked::before {
+    @apply text-emerald-500;
+}
+
+.achievement.unlocked .text-base {
+    @apply text-emerald-700;
+}
+
+.achievement.unlocked .text-xs {
+    @apply text-emerald-600;
+}
+
+/* Game History styles */
+#numberHistory th {
+    @apply bg-slate-50;
+    @apply text-slate-600;
+}
+
+.history-row-win {
+    @apply bg-emerald-50;
+}
+
+.history-row-lose {
+    @apply bg-rose-50;
+}
+
+.history-row-win td {
+    @apply text-emerald-700;
+}
+
+.history-row-lose td {
+    @apply text-rose-700;
+}
+
+/* Timer styles */
+#timerDisplay {
+    @apply text-slate-700;
+    font-family: 'Courier New', monospace;
+}
+
+#timerDisplay.warning {
+    @apply text-rose-600;
+    animation: pulse 1s infinite;
+}
+
+/* Power-up styles */
+.power-up-btn {
+    @apply bg-gradient-to-r from-indigo-500 to-purple-500;
+    @apply text-white;
+    @apply hover:from-indigo-600 hover:to-purple-600;
+    @apply transition-all duration-300;
+}
+
+.power-up-btn:disabled {
+    @apply bg-slate-300;
+    @apply text-slate-500;
+}
+
+/* Result Popup styles */
+#resultPopup {
+    @apply bg-slate-900/50 backdrop-blur-sm;
+}
+
+#resultPopup .bg-white {
+    @apply bg-white/95 backdrop-blur-sm;
+    @apply border border-slate-200;
+    @apply shadow-2xl;
+}
+
+#popupTitle.win {
+    @apply text-emerald-600;
+}
+
+#popupTitle.lose {
+    @apply text-rose-600;
+}
+
+/* Game Status styles */
+#gameStatus {
+    @apply bg-gradient-to-r from-slate-50 to-white;
+    @apply border border-slate-200;
+    @apply shadow-sm;
+}
+
+#gameStatus.success {
+    @apply bg-gradient-to-r from-emerald-50 to-green-50;
+    @apply text-emerald-700;
+}
+
+#gameStatus.error {
+    @apply bg-gradient-to-r from-rose-50 to-red-50;
+    @apply text-rose-700;
+}
+
+#gameStatus.info {
+    @apply bg-gradient-to-r from-indigo-50 to-blue-50;
+    @apply text-indigo-700;
+}
+
+/* Called Number Display */
+#calledNumber {
+    @apply text-4xl font-bold;
+    @apply bg-gradient-to-r from-indigo-600 to-purple-600;
+    @apply bg-clip-text text-transparent;
+    @apply animate-pulse;
+}
+
+/* Scrollbar styles */
+.overflow-y-auto {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* Game History and Achievements container styles */
+#achievementsContainer,
+#numberHistory {
+    @apply overflow-y-auto;
+    @apply scrollbar-none;
+    @apply hover:scrollbar-thin;
+    @apply transition-all duration-300;
+}
+
+/* Add smooth scrolling */
+#achievementsContainer,
+#numberHistory {
+    scroll-behavior: smooth;
+}
+
+/* Add a subtle gradient fade at the bottom to indicate scrollable content */
+#achievementsContainer::after,
+#numberHistory::after {
+    content: '';
+    @apply absolute bottom-0 left-0 right-0;
+    @apply h-8 pointer-events-none;
+    @apply bg-gradient-to-t from-white to-transparent;
+    @apply opacity-0 transition-opacity duration-300;
+}
+
+#achievementsContainer:hover::after,
+#numberHistory:hover::after {
+    @apply opacity-100;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@keyframes popupAppear {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+    .container {
+        @apply px-2;
+    }
+    
+    .lg\:w-1\/3,
+    .lg\:w-2\/3 {
+        @apply w-full;
+    }
+}
+
+@media (max-width: 768px) {
+    #numberHistory th,
+    #numberHistory td {
+        @apply px-1 py-0.5 text-xs;
+    }
+    
+    .achievement {
+        @apply p-2;
+    }
+    
+    .achievement .text-base {
+        @apply text-sm;
+    }
+    
+    .achievement .text-xs {
+        @apply text-2xs;
+    }
+}
+
+#achievementsContainer .achievement.unlocked {
+    @apply border-emerald-500;
+    @apply bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100;
+    @apply shadow-lg;
+    @apply transform -translate-y-1;
+}
+
+#achievementsContainer .achievement.unlocked::before {
+    content: '✓';
+    @apply absolute -top-2 -right-2;
+    @apply bg-gradient-to-r from-emerald-500 to-green-500;
+    @apply text-white;
+    @apply w-6 h-6 rounded-full;
+    @apply flex items-center justify-center;
+    @apply font-bold;
+    @apply shadow-md;
+    animation: checkmark 0.5s ease-out;
+}
+
+#achievementsContainer .achievement.unlocked::after {
+    content: '';
+    @apply absolute inset-0;
+    @apply bg-gradient-to-r from-transparent via-white/30 to-transparent;
+    @apply opacity-0;
+    animation: shine 2s infinite;
+}
+
+#achievementsContainer .achievement.unlocked:hover::after {
+    @apply opacity-100;
+}
+
+#achievementsContainer .achievement.unlocked .text-base {
+    @apply text-emerald-700 font-bold;
+    @apply bg-gradient-to-r from-emerald-700 to-green-700;
+    @apply bg-clip-text text-transparent;
+}
+
+#achievementsContainer .achievement.unlocked .text-xs {
+    @apply text-emerald-600;
+} 

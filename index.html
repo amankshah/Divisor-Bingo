@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divisor Bingo Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+        
+        body {
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .achievement-popup {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        .power-up-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .win-animation {
+            animation: winPulse 0.5s ease-out;
+        }
+        
+        @keyframes winPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200">
+    <div class="h-full flex flex-col">
+        <header class="text-center py-2">
+            <h1 class="text-3xl font-bold text-gray-900" style="font-family: 'Uncial Antiqua', cursive;">Divisor Bingo</h1>
+            <p class="text-sm text-gray-600">Find numbers with common divisors to win!</p>
+        </header>
+
+        <div class="flex-1 flex flex-col lg:flex-row gap-4 p-4 overflow-hidden">
+            <!-- Left Sidebar -->
+            <div class="lg:w-1/3 flex flex-col gap-4 h-full">
+                <!-- Achievements -->
+                <div class="bg-white rounded-lg shadow-xl p-4 flex-1 overflow-hidden flex flex-col">
+                    <h3 class="text-lg font-bold text-gray-800 mb-2 flex items-center">
+                        <span class="mr-2">🏆</span>
+                        Achievements
+                    </h3>
+                    <div id="achievementsContainer" class="grid grid-cols-1 gap-2 overflow-y-auto">
+                        <div class="achievement bg-gray-50 p-3 rounded-lg">
+                            <div class="text-base font-bold">First Victory</div>
+                            <div class="text-xs text-gray-600">Win your first game</div>
+                        </div>
+                        <div class="achievement bg-gray-50 p-3 rounded-lg">
+                            <div class="text-base font-bold">3 Win Streak</div>
+                            <div class="text-xs text-gray-600">Win 3 games in a row</div>
+                        </div>
+                        <div class="achievement bg-gray-50 p-3 rounded-lg">
+                            <div class="text-base font-bold">5 Win Streak</div>
+                            <div class="text-xs text-gray-600">Win 5 games in a row</div>
+                        </div>
+                        <div class="achievement bg-gray-50 p-3 rounded-lg">
+                            <div class="text-base font-bold">Perfect Game</div>
+                            <div class="text-xs text-gray-600">Win all rounds in a game</div>
+                        </div>
+                        <div class="achievement bg-gray-50 p-3 rounded-lg">
+                            <div class="text-base font-bold">Speed Runner</div>
+                            <div class="text-xs text-gray-600">Complete a round with time remaining</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game History -->
+                <div class="bg-white rounded-lg shadow-xl p-4 flex-1 overflow-hidden flex flex-col">
+                    <h3 class="text-lg font-bold text-gray-800 mb-2 flex items-center">
+                        <span class="mr-2">📊</span>
+                        Game History
+                    </h3>
+                    <div class="overflow-y-auto flex-1">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50 sticky top-0">
+                                <tr>
+                                    <th scope="col" class="px-2 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Round</th>
+                                    <th scope="col" class="px-2 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">System</th>
+                                    <th scope="col" class="px-2 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Player</th>
+                                    <th scope="col" class="px-2 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
+                                </tr>
+                            </thead>
+                            <tbody id="numberHistory" class="bg-white divide-y divide-gray-200">
+                                <!-- Game history will be displayed here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Game Area -->
+            <div class="lg:w-2/3 flex-1 overflow-hidden">
+                <div class="bg-white rounded-lg shadow-xl p-4 h-full flex flex-col">
+                    <!-- Timer Display -->
+                    <div class="text-right mb-2">
+                        <div id="timerDisplay" class="text-lg font-bold text-gray-700">Time: 30s</div>
+                    </div>
+
+                    <!-- Power-ups -->
+                    <div id="powerUpContainer" class="flex justify-center space-x-2 mb-2">
+                        <!-- Power-up buttons will be added here dynamically -->
+                    </div>
+
+                    <!-- Hint Display -->
+                    <div id="hintDisplay" class="text-center text-blue-600 mb-2 min-h-[20px] text-sm"></div>
+
+                    <!-- Score Board -->
+                    <div class="grid grid-cols-5 gap-2 mb-2">
+                        <div class="bg-gray-50 p-2 rounded-lg text-center">
+                            <div class="text-xs text-gray-600">Player Score</div>
+                            <div id="playerScore" class="text-xl font-bold text-green-600">0</div>
+                        </div>
+                        <div class="bg-gray-50 p-2 rounded-lg text-center">
+                            <div class="text-xs text-gray-600">System Score</div>
+                            <div id="systemScore" class="text-xl font-bold text-red-600">0</div>
+                        </div>
+                        <div class="bg-gray-50 p-2 rounded-lg text-center">
+                            <div class="text-xs text-gray-600">Win Streak</div>
+                            <div id="winStreak" class="text-xl font-bold text-blue-600">0</div>
+                        </div>
+                        <div class="bg-gray-50 p-2 rounded-lg text-center">
+                            <div class="text-xs text-gray-600">Best Streak</div>
+                            <div id="bestStreak" class="text-xl font-bold text-purple-600">0</div>
+                        </div>
+                        <div class="bg-gray-50 p-2 rounded-lg text-center">
+                            <div class="text-xs text-gray-600">Attempts Left</div>
+                            <div id="attemptsNumber" class="text-xl font-bold text-orange-600">10</div>
+                        </div>
+                    </div>
+
+                    <!-- Game Stats -->
+                    <div class="grid grid-cols-3 gap-2 mb-2">
+                        <div class="bg-gray-50 p-2 rounded-lg text-center">
+                            <div class="text-xs text-gray-600">System Number</div>
+                            <div id="numbersCalled" class="text-xl font-bold text-gray-900">-</div>
+                        </div>
+                        <div class="bg-gray-50 p-2 rounded-lg text-center">
+                            <div class="text-xs text-gray-600">Player Number</div>
+                            <div id="numbersLeft" class="text-xl font-bold text-gray-900">-</div>
+                        </div>
+                        <div class="bg-gray-50 p-2 rounded-lg text-center">
+                            <div class="text-xs text-gray-600">Common Divisors</div>
+                            <div id="markedNumbers" class="text-xl font-bold text-gray-900">0</div>
+                        </div>
+                    </div>
+
+                    <!-- Game Controls -->
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="space-x-2">
+                            <button id="startGame" class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-1 px-3 rounded-lg transition-colors text-sm">
+                                Start New Game
+                            </button>
+                            <button id="autoPlay" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded-lg transition-colors text-sm" disabled>
+                                Auto Play
+                            </button>
+                        </div>
+                        <div class="space-x-2">
+                            <button id="callNumber" class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-1 px-3 rounded-lg transition-colors text-sm" disabled>
+                                Generate Number
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Custom Number Input -->
+                    <div class="mb-2">
+                        <div class="flex items-center space-x-2">
+                            <input type="number" id="customNumber" min="2" max="10" 
+                                   class="flex-1 p-1 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500 text-sm"
+                                   placeholder="Enter a number (2-10)">
+                            <button id="submitCustomNumber" 
+                                    class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-1 px-3 rounded-lg transition-colors text-sm">
+                                Submit Number
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Called Number Display -->
+                    <div class="mb-2 text-center">
+                        <div class="text-lg font-bold text-gray-800">System Number</div>
+                        <div id="calledNumber" class="text-3xl font-bold text-gray-900 called-number">-</div>
+                    </div>
+
+                    <!-- Game Status -->
+                    <div id="gameStatus" class="text-center p-2 rounded-lg mt-2 text-sm"></div>
+
+                    <!-- Sound Toggle -->
+                    <div class="mt-2 text-center">
+                        <button id="toggleSound" class="text-gray-600 hover:text-gray-800 transition-colors duration-200 text-sm">
+                            <span class="sound-icon">🔊</span> Toggle Sound
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bingoSound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
+    <audio id="loseSound" src="https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3"></audio>
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3"></audio>
+    <audio id="popupSound" src="https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3"></audio>
+    <audio id="finalWinSound" src="WIN.WAV"></audio>
+
+    <!-- Result Popup -->
+    <div id="resultPopup" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 transform transition-all">
+            <div class="text-center">
+                <h2 id="popupTitle" class="text-3xl font-bold mb-3"></h2>
+                <p id="popupMessage" class="text-lg mb-4"></p>
+                <button id="closePopup" class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
